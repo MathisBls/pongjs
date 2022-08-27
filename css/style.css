@@ -1,0 +1,6 @@
+/*desactive le scroll*/
+body {
+  overflow: hidden;
+  cursor: none;
+  margin:0;
+}
