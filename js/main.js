@@ -4,6 +4,8 @@ var game;
 var i = 0;
 var j = 0;
 var coup = 0;
+var audio = new Audio('sound/retromusic.mp3');
+
 const PLAYER_HEIGHT = 100;
 const PLAYER_WIDTH = 5;
 const MAX_SPEED = 12;
@@ -78,6 +80,7 @@ document.addEventListener('DOMContentLoaded', function () {
 function play() {
     game.ball.x += game.ball.speed.x;
     game.ball.y += game.ball.speed.y;
+
     draw();
     ballMove();
     computerMove();
@@ -111,10 +114,13 @@ function ballMove() {
     }
     if (game.ball.x > canvas.width - PLAYER_WIDTH) {
         collide(game.computer);
+        audio.volume = 0.2; 
+        audio.play();
         coup++;
     } else if (game.ball.x < PLAYER_WIDTH) {
         collide(game.player);
         coup++;
+
     }
     
     game.ball.x += game.ball.speed.x;
@@ -201,6 +207,3 @@ function reset() {
     game.ball.speed.x = 3;
     game.ball.speed.y = Math.random() * 3;
 }
-
-
-
