@@ -3,4 +3,18 @@ body {
   overflow: hidden;
   cursor: none;
   margin:0;
+  padding:0;
+  background-color: rgb(73, 73, 73);
+}
+
+main{
+  display:flex;
+  justify-content: center;
+  margin-top: 5%;
+}
+
+h1{
+  text-align: center;
+  color: white;
+  font-size: 3em;
 }

@@ -6,6 +6,7 @@ var j = 0;
 var coup = 0;
 const PLAYER_HEIGHT = 100;
 const PLAYER_WIDTH = 5;
+const MAX_SPEED = 12;
 function draw() {
     var context = canvas.getContext('2d');
     // Draw field
@@ -51,10 +52,13 @@ document.addEventListener('DOMContentLoaded', function () {
     canvas = document.getElementById('canvas');
     game = {
         player: {
-            y: canvas.height / 2 - PLAYER_HEIGHT / 2
+            y: canvas.height / 2 - PLAYER_HEIGHT / 2,
+            score : 0
+
         },
         computer: {
-            y: canvas.height / 2 - PLAYER_HEIGHT / 2
+            y: canvas.height / 2 - PLAYER_HEIGHT / 2,
+            score : 0
         },
         ball: {
             x: canvas.width / 2,
@@ -68,6 +72,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     draw();
     play();
+    reset();
 });
 
 function play() {
@@ -77,7 +82,6 @@ function play() {
     ballMove();
     computerMove();
     winable();
-
     requestAnimationFrame(play);
 }
 
@@ -98,14 +102,14 @@ function playerMove(event) {
 
 
 function computerMove() {
-    game.computer.y += game.ball.speed.y * 0.85;
+    game.computer.y += game.ball.speed.y * 1.5;
 }
 function ballMove() {
     // Rebounds on top and bottom
     if (game.ball.y > canvas.height || game.ball.y < 0) {
         game.ball.speed.y *= -1;
     }
-    if (game.ball.x > canvas.width + 1 ) {
+    if (game.ball.x > canvas.width - PLAYER_WIDTH) {
         collide(game.computer);
         coup++;
     } else if (game.ball.x < PLAYER_WIDTH) {
@@ -120,28 +124,26 @@ function ballMove() {
 function collide(player) {
     // The player does not hit the ball
     if (game.ball.y < player.y || game.ball.y > player.y + PLAYER_HEIGHT) {
-        // Set ball and players to the center
-        game.ball.x = canvas.width / 2;
-        game.ball.y = canvas.height / 2;
-        game.player.y = canvas.height / 2 - PLAYER_HEIGHT / 2;
-        game.computer.y = canvas.height / 2 - PLAYER_HEIGHT / 2;
-        
-        // Reset speed
-        game.ball.speed.x = 2;
+        reset();
+
+        // Update score
+        if (player == game.player) {
+            j++;
+            coup = 0;
+        } else {
+            i++;
+            coup = 0;
+        }
     } else {
-        // Increase speed and change direction
-        game.ball.speed.x *= -1.2;
-    }
+        // Change direction
+        game.ball.speed.x *= -1;
+        changeDirection(player.y);
 
-    if(player == game.player){
-        j++;
+        // Increase speed if it has not reached max speed
+        if (Math.abs(game.ball.speed.x) < MAX_SPEED) {
+            game.ball.speed.x *= 1.2;
+        }
     }
-    else{
-        i++;
-    }
-
-
-    changeDirection(player.y);
 }
 
 function changeDirection(playerPosition) {
@@ -156,10 +158,15 @@ function winable() {
     if (i == 10) {
         alert("You win!");
         i=0;
+        j=0;
+        coup = 0;
     } else if (j == 10) {
         alert("You lose!");
         j=0;
+        i=0;
+        coup = 0;
     }
+    console.log("player: " + i + " computer: " + j);
 }
 
 
@@ -182,4 +189,18 @@ function stop(event) {
     coup = 0;
     }
 }
+
+function reset() {
+    // Set ball and players to the center
+    game.ball.x = canvas.width / 2;
+    game.ball.y = canvas.height / 2;
+    game.player.y = canvas.height / 2 - PLAYER_HEIGHT / 2;
+    game.computer.y = canvas.height / 2 - PLAYER_HEIGHT / 2;
+
+    // Reset speed
+    game.ball.speed.x = 3;
+    game.ball.speed.y = Math.random() * 3;
+}
+
+
 
