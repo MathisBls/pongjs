@@ -18,3 +18,22 @@ h1{
   color: white;
   font-size: 3em;
 }
+
+.buttons{
+  display: flex;
+  justify-content: center;
+
+}
+
+.button_game{
+  width: 200px;
+  height: 50px;
+  background-color: rgb(255, 255, 255);
+  border-radius: 10px;
+  border: 1px solid rgb(255, 255, 255);
+  color: rgb(73, 73, 73);
+  font-size: 1.5em;
+  font-weight: bold;
+  margin: 10px;
+  cursor: pointer;
+}

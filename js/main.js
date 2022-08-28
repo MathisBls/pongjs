@@ -5,10 +5,13 @@ var i = 0;
 var j = 0;
 var coup = 0;
 var audio = new Audio('sound/retromusic.mp3');
+// document.getElementById('impossible').style.display = 'false';
+// document.getElementById('impossible').style.opacity = '50%';
+// document.getElementById('impossible').style.cursor = 'not-allowed';
 
 const PLAYER_HEIGHT = 100;
 const PLAYER_WIDTH = 5;
-const MAX_SPEED = 12;
+const MAX_SPEED = 15;
 function draw() {
     var context = canvas.getContext('2d');
     // Draw field
@@ -50,6 +53,7 @@ context.arc(game.ball.x, game.ball.y, game.ball.r, 0, Math.PI * 2, false);
 context.fill();
 }
 
+
 document.addEventListener('DOMContentLoaded', function () {
     canvas = document.getElementById('canvas');
     game = {
@@ -74,6 +78,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     draw();
     play();
+    impossible();
+
     reset();
 });
 
@@ -105,7 +111,7 @@ function playerMove(event) {
 
 
 function computerMove() {
-    game.computer.y += game.ball.speed.y * 2;
+    game.computer.y += game.ball.speed.y * 1.7;
 }
 function ballMove() {
     // Rebounds on top and bottom
@@ -207,3 +213,31 @@ function reset() {
     game.ball.speed.x = 3;
     game.ball.speed.y = Math.random() * 3;
 }
+
+// document.getElementById('impossible').addEventListener('click', impossible);
+// function impossible (){
+// {
+//     //si j'appuie sur 1
+//     if (event.keyCode == 13) {
+//     document.getElementById('normal').style.display = 'none';
+//     document.getElementById('normal').style.opacity = '50%';
+//     document.getElementById('normal').style.cursor = 'not-allowed';
+//     document.getElementById('impossible').style.display = 'true';
+//     document.getElementById('impossible').style.opacity = '100%';
+//     document.getElementById('impossible').style.cursor = 'pointer';
+// }
+
+//     //si j'appuie sur 2
+//     if (event.keyCode == 13) {
+//         document.getElementById('impossible').style.display = 'none';
+//         document.getElementById('impossible').style.opacity = '50%';
+//         document.getElementById('impossible').style.cursor = 'not-allowed';
+//         document.getElementById('normal').style.display = 'true';
+//         document.getElementById('normal').style.display = '100%';
+//         document.getElementById('normal').style.cursor = 'pointer';
+
+
+//     }
+//     console.log('impossible');
+// }
+// }
