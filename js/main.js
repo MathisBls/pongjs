@@ -3,6 +3,7 @@ var canvas;
 var game;
 var i = 0;
 var j = 0;
+var coup = 0;
 const PLAYER_HEIGHT = 100;
 const PLAYER_WIDTH = 5;
 function draw() {
@@ -21,6 +22,19 @@ function draw() {
     context.fillStyle = 'white';
     context.fillText(i, canvas.width / 4, canvas.height / 2);
     context.fillText(j, 3 * canvas.width / 4, canvas.height / 2);
+
+    //marque un texte en haut de lecran
+    context.font = '20px Arial';
+    context.fillStyle = 'white';
+    context.fillText("Entrée pour restart ", 0, 50);
+
+    //compteur de coup
+    context.font = '25px Arial';
+    context.fillStyle = 'grey';
+    //place texte en bas à gauche
+    context.fillText("Coup: " + coup, 0, canvas.height - 10);
+
+
 
     // Draw players
 context.fillStyle = 'white';
@@ -63,7 +77,6 @@ function play() {
     ballMove();
     computerMove();
     winable();
-    score();
 
     requestAnimationFrame(play);
 }
@@ -85,18 +98,19 @@ function playerMove(event) {
 
 
 function computerMove() {
-    game.computer.y += game.ball.speed.y * 2.85;
+    game.computer.y += game.ball.speed.y * 0.85;
 }
 function ballMove() {
     // Rebounds on top and bottom
     if (game.ball.y > canvas.height || game.ball.y < 0) {
         game.ball.speed.y *= -1;
     }
-    if (game.ball.x > canvas.width - PLAYER_WIDTH) {
+    if (game.ball.x > canvas.width + 1 ) {
         collide(game.computer);
+        coup++;
     } else if (game.ball.x < PLAYER_WIDTH) {
         collide(game.player);
-        
+        coup++;
     }
     
     game.ball.x += game.ball.speed.x;
@@ -118,6 +132,16 @@ function collide(player) {
         // Increase speed and change direction
         game.ball.speed.x *= -1.2;
     }
+
+    if(player == game.player){
+        j++;
+    }
+    else{
+        i++;
+    }
+
+
+    changeDirection(player.y);
 }
 
 function changeDirection(playerPosition) {
@@ -138,14 +162,24 @@ function winable() {
     }
 }
 
-function score() {
-    if (game.ball.x == canvas.width - PLAYER_WIDTH) {
-        i++;
-    } else if (game.ball.x <= 0) {
-        j++;
+
+document.addEventListener('keydown', stop);
+function stop(event) {
+    //si j'appuie sur entrée
+    if (event.keyCode == 13) {
+    cancelAnimationFrame(play);
+
+    game.ball.x = canvas.width / 2;
+    game.ball.y = canvas.height / 2;
+    game.player.y = canvas.height / 2 - PLAYER_HEIGHT / 2;
+    game.computer.y = canvas.height / 2 - PLAYER_HEIGHT / 2;
+    // Reset speed
+    game.ball.speed.x = 2;
+    game.ball.speed.y = 2;
+
+    i = 0;
+    j = 0;
+    coup = 0;
     }
-    console.log(" player: " + i + " computer: " + j);
 }
 
-game.ball.speed.x *= -1.2;
-changeDirection(player.y);
