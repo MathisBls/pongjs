@@ -105,7 +105,7 @@ function playerMove(event) {
 
 
 function computerMove() {
-    game.computer.y += game.ball.speed.y * 1.5;
+    game.computer.y += game.ball.speed.y * 2;
 }
 function ballMove() {
     // Rebounds on top and bottom
